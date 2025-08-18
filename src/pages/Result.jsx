@@ -3,8 +3,16 @@ import { assets } from "../assets/assets";
 const Result = () => {
   const [image, setImage] = useState(assets.sample_img_1);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [input, setInput] = useState("");
+
+  const onSubmitHandler = async (e) => {};
+
   return (
-    <form className="flex flex-col min-h-[90vh] justify-center items-center">
+    <form
+      onSubmit={onSubmitHandler}
+      className="flex flex-col min-h-[90vh] justify-center items-center"
+    >
       <div>
         <div className="relative w-full max-w-md">
           <img
@@ -12,14 +20,18 @@ const Result = () => {
             alt=""
             className="w-full h-auto rounded object-cover"
           />
-          <span className="absolute bottom-0 left-0 h-2 bg-gradient-to-r from-blue-600 to-purple-700 w-full transition-all duration-[10s]" />
+          <span
+            className={`absolute bottom-0 left-0 h-2 bg-gradient-to-r from-blue-600 to-purple-700 $ {loading ? 'w-full transition-all duration-[10s]' : 'w-0'}`}
+          />
         </div>
 
-        <p>Loading...</p>
+        <p className={!loading ? "hidden" : ""}>Loading...</p>
 
         {!isImageLoaded && (
           <div className="border-3 border-purple-600 flex w-full max-w-xl bg-gradient-to-r from-blue-300 to-purple-300 text-black text-sm p-0.5 mt-10 rounded-full">
             <input
+              onChange={(e) => setInput(e.target.value)}
+              value={input}
               type="text"
               placeholder="Describe what you want to generate"
               className="flex-1 bg-transparent outline-none ml-3 sm:ml-8 text-xs sm:text-sm max-sm:w-20"
@@ -38,7 +50,12 @@ const Result = () => {
         )}
         {isImageLoaded && (
           <div className="flex gap-2 flex-wrap justify-center text-white text-sm p-0.5 mt-10 rounded-full">
-            <p className="bg-transparent border border-zinc-900 text-black px-8 py-3 rounded-full cursor-pointer">
+            <p
+              onClick={() => {
+                setIsImageLoaded(false);
+              }}
+              className="bg-transparent border border-zinc-900 text-black px-8 py-3 rounded-full cursor-pointer"
+            >
               Generate Another
             </p>
             <a
